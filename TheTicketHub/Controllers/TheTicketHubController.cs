@@ -30,12 +30,12 @@ namespace TheTicketHub.Controllers
         {
             
             //1.Validation
-            if (string.IsNullOrEmpty(theTicketHub.Name) || string.IsNullOrEmpty(theTicketHub.Phone))
+            if (string.IsNullOrEmpty(theTicketHub.name) || string.IsNullOrEmpty(theTicketHub.phone))
             {
                 return BadRequest("Name and Phone are required");
             }
             
-            return Ok("Hello" + theTicketHub.Name + " from Post()");
+            return Ok("Hello " + theTicketHub.name + " from Post()");
 
 
 
