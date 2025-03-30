@@ -30,19 +30,21 @@ namespace TheTicketHub.Controllers
         {
             
             //1.Validation
-            if (string.IsNullOrEmpty(theTicketHub.name) || string.IsNullOrEmpty(theTicketHub.phone))
+            //if (string.IsNullOrEmpty(theTicketHub.name) || string.IsNullOrEmpty(theTicketHub.phone))
+            //{
+            //    return BadRequest("Name and Phone are required");
+            //}
+            
+            
+
+
+
+            if (ModelState.IsValid == false)
             {
-                return BadRequest("Name and Phone are required");
+                return BadRequest(ModelState);
             }
             
             return Ok("Hello " + theTicketHub.name + " from Post()");
-
-
-
-            //if (ModelState.IsValid == false)
-            //{
-            //    return BadRequest(ModelState);
-            //}
 
             //// 2. Send contact to Azure queue
 
