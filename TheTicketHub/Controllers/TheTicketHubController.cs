@@ -27,30 +27,18 @@ namespace TheTicketHub.Controllers
         }
 
         [HttpPost]
-        //public async Task<IActionResult> Post(Ticket_Hub contact)
+
         public async Task<IActionResult> Post(TheTicketHub theTicketHub)
         {
 
             //1.Validation
-
-            //if (string.IsNullOrEmpty(theTicketHub.name) || string.IsNullOrEmpty(theTicketHub.phone))
-            //{
-            //    return BadRequest("Name and Phone are required");
-            //}
-
-
-
-
 
             if (ModelState.IsValid == false)
             {
                 return BadRequest(ModelState);
             }
             
-            
-            
             // 2. Send ticket information to Azure queue
-
 
             string queueName = "thetickethub";
 
@@ -67,32 +55,8 @@ namespace TheTicketHub.Controllers
             // serialize an object to json
             string message = JsonSerializer.Serialize(theTicketHub);
 
-
             // send string message to queue
             await queueClient.SendMessageAsync(message);
-
-
-
-            
-
-            //string queueName = "ticket-hub";
-
-            //// Get connection string from secrets.json
-            //string? connectionString = _configuration["AzureStorageConnectionString"];
-
-            //if (string.IsNullOrEmpty(connectionString))
-            //{
-            //    return BadRequest("An error was encountered");
-            //}
-
-            //QueueClient queueClient = new QueueClient(connectionString, queueName);
-
-            //// serialize an object to json
-            //string message = JsonSerializer.Serialize(contact);
-            ////string message = "Hello from API.";
-
-            //// send string message to queue
-            //await queueClient.SendMessageAsync(message);
 
             return Ok("Hello " + theTicketHub.name + ". The ticket information added to Azure queue.");
         }
