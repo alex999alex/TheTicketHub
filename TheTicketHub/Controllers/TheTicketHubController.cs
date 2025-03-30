@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Azure.Storage.Queues;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using System.Runtime.InteropServices.Marshalling;
 using System.Text.Json;
 
 namespace TheTicketHub.Controllers
@@ -26,16 +28,17 @@ namespace TheTicketHub.Controllers
 
         [HttpPost]
         //public async Task<IActionResult> Post(Ticket_Hub contact)
-        public IActionResult Post(TheTicketHub theTicketHub)
+        public async Task<IActionResult> Post(TheTicketHub theTicketHub)
         {
-            
+
             //1.Validation
+
             //if (string.IsNullOrEmpty(theTicketHub.name) || string.IsNullOrEmpty(theTicketHub.phone))
             //{
             //    return BadRequest("Name and Phone are required");
             //}
-            
-            
+
+
 
 
 
@@ -44,9 +47,33 @@ namespace TheTicketHub.Controllers
                 return BadRequest(ModelState);
             }
             
-            return Ok("Hello " + theTicketHub.name + " from Post()");
+            
+            
+            // 2. Send ticket information to Azure queue
 
-            //// 2. Send contact to Azure queue
+
+            string queueName = "thetickethub";
+
+            // Get connection string from secrets.json
+            string? connectionString = _configuration["AzureStorageConnectionString"];
+
+            if (string.IsNullOrEmpty(connectionString))
+            {
+                return BadRequest("An error was encountered");
+            }
+
+            QueueClient queueClient = new QueueClient(connectionString, queueName);
+
+            // serialize an object to json
+            string message = JsonSerializer.Serialize(theTicketHub);
+
+
+            // send string message to queue
+            await queueClient.SendMessageAsync(message);
+
+
+
+            
 
             //string queueName = "ticket-hub";
 
@@ -67,7 +94,7 @@ namespace TheTicketHub.Controllers
             //// send string message to queue
             //await queueClient.SendMessageAsync(message);
 
-            //return Ok("Hello " + contact.Name + ". Contact added to Azure queue.");
+            return Ok("Hello " + theTicketHub.name + ". The ticket information added to Azure queue.");
         }
     }
 }
