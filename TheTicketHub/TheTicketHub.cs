@@ -45,12 +45,10 @@ namespace TheTicketHub
 
         [Required(ErrorMessage = "City is required.")]
         [StringLength(100, MinimumLength = 2, ErrorMessage = "City must be between 2 and 100 characters.")]
-        [RegularExpression(@"^[a-zA-Z\s-']+$", ErrorMessage = "City can only contain letters, spaces, hyphens, and apostrophes.")]
         public string city { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Province is required.")]
         [StringLength(100, MinimumLength = 2, ErrorMessage = "Province must be between 2 and 100 characters.")]
-        [RegularExpression(@"^[a-zA-Z\s-']+$", ErrorMessage = "Province can only contain letters, spaces, hyphens, and apostrophes.")]
         public string province { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Postal code is required.")]
@@ -59,7 +57,6 @@ namespace TheTicketHub
 
         [Required(ErrorMessage = "Country is required.")]
         [StringLength(100, MinimumLength = 2, ErrorMessage = "Country must be between 2 and 100 characters.")]
-        [RegularExpression(@"^[a-zA-Z\s-']+$", ErrorMessage = "Country can only contain letters, spaces, hyphens, and apostrophes.")]
         public string country { get; set; } = string.Empty;
     }
 }
